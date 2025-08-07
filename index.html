@@ -14,6 +14,10 @@
         グループ名：<input type="text" id="groupName" required placeholder="グループ名(必須)">
     </label>
     <label>
+        接頭語（例: skillName_、空欄ならCDのみ）：
+        <input type="text" id="prefix" placeholder="例: skillName_">
+    </label>
+    <label>
         トリガーワード：<input type="text" id="triggerWord" required placeholder="トリガー（必須）">
     </label>
     <label>
@@ -31,6 +35,11 @@
     <label>
         overlayFScale(文字の大きさ)：<input type="number" id="fScale" value="3" step="0.1">
     </label>
+    <label>
+        0.1秒刻みにする閾値（例:2, 空欄なら全て1秒）：
+        <input type="number" id="fineThreshold" step="1" min="0" placeholder="例:2">
+    </label>
+
 
     <button id="generateBtn">設定を生成</button>
     <button id="copyBtn">クリップボードにコピー</button>
