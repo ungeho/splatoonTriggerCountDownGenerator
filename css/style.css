@@ -1,79 +1,181 @@
+:root {
+    --bg: #f7f8fa;
+    --card: #ffffff;
+    --text: #1f2330;
+    --muted: #6b7280;
+    --accent: #007acc;
+    --accent-ink: #ffffff;
+    --border: #e5e7eb;
+    --focus: #99c9ff;
+    --mono: ui-monospace, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+/* ダークテーマ変数上書き */
+body.dark {
+    --bg: #1f232b;
+    --card: #2b303b;
+    --text: #e4e4e7;
+    --muted: #9ca3af;
+    --accent: #3b82f6;
+    --accent-ink: #f9fafb;
+    --border: #4b5563;
+    --focus: #2563eb88;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
 body {
-    font-family: 'Segoe UI', sans-serif;
-    padding: 2rem;
-    max-width: 800px;
-    margin: auto;
-    background-color: #f9f9f9;
-    color: #333;
+    height: 100%;
 }
 
-h1 {
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans JP", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+.site-header {
+    padding: 20px 16px;
     text-align: center;
-    color: #222;
 }
 
-label {
+.site-header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    letter-spacing: .02em;
+}
+
+.container {
+    max-width: 980px;
+    margin: 0 auto 32px;
+    padding: 0 16px;
+    display: grid;
+    gap: 16px;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+}
+
+.card-title {
+    margin: 0 0 12px;
+    font-size: 1.1rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+}
+
+.field {
     display: flex;
     flex-direction: column;
-    margin-bottom: 1rem;
-    font-weight: bold;
+    gap: 6px;
+}
+
+.field span {
+    font-size: .9rem;
+    color: var(--muted);
+}
+
+.req {
+    font-weight: 600;
+    color: #d12b2b;
+    font-size: .85em;
+}
+
+.hint {
+    color: var(--muted);
+    font-size: .8rem;
+}
+
+input,
+select,
+textarea,
+button {
+    font: inherit;
 }
 
 input,
 select,
 textarea {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    margin-top: 5px;
-    background-color: #fff;
+    width: 100%;
+    background: #fff;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    outline: none;
+    transition: border-color .15s, box-shadow .15s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--focus);
 }
 
 textarea {
-    width: 100%;
-    height: 200px;
-    font-family: monospace;
+    min-height: 220px;
     resize: vertical;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.5;
 }
 
-button {
-    padding: 10px 16px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin-top: 10px;
-    margin-right: 10px;
-    transition: background-color 0.3s ease;
+    flex-wrap: wrap;
 }
 
-button#generateBtn {
-    background-color: #007acc;
-    color: white;
+.btn {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--text);
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform .05s ease, background-color .2s ease, border-color .2s ease;
 }
 
-button#generateBtn:hover {
-    background-color: #005fa3;
+.btn:hover {
+    background: #f3f4f6;
 }
 
-button#copyBtn {
-    background-color: #28a745;
-    color: white;
+.btn:active {
+    transform: translateY(1px);
 }
 
-button#copyBtn:hover {
-    background-color: #1f7e34;
+.btn.primary {
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-color: #0b64ae;
+}
+
+.btn.primary:hover {
+    background: #0b75c9;
 }
 
 .copy-message {
     opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-    margin-left: 10px;
-    color: green;
-    font-weight: bold;
+    transition: opacity .25s ease;
+    color: #16a34a;
+    font-weight: 600;
 }
 
 .copy-message.visible {
@@ -81,8 +183,110 @@ button#copyBtn:hover {
 }
 
 #errorMsg {
-    color: red;
-    margin-top: 10px;
-    font-weight: bold;
-    display: block;
+    color: #d12b2b;
+    font-weight: 600;
+}
+
+.output-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.bytes {
+    color: var(--muted);
+    font-size: .85rem;
+}
+
+.site-footer {
+    text-align: center;
+    color: var(--muted);
+    padding: 18px 0 28px;
+    border-top: 1px solid var(--border);
+    margin-top: 12px;
+}
+
+
+/* ヘッダーを横並びにしてボタンを右寄せ */
+.site-header {
+    padding: 20px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* ← これで右隣に配置 */
+}
+
+/* トグルボタンの見た目（小さめのピル） */
+.btn.small {
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+/* トグル専用の微調整 */
+.btn.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: .4em;
+    background: #fff;
+    /* ライト時: 白背景 */
+    color: var(--text);
+    /* ライト時: 既定テキスト色 */
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+}
+
+/* ダーク時の可読性改善：
+   白背景 + 濃い文字で「ライト」が見やすいように */
+body.dark .btn.theme-toggle {
+    background: #ffffff;
+    color: #111827;
+    /* 濃いテキストでコントラスト確保 */
+    border-color: #d1d5db;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+}
+
+/* テキストエリア（コードエリア）をダーク時だけ濃く */
+body.dark textarea {
+    background: #0f141b;
+    /* ぐっと濃いめ */
+    color: #e5e7eb;
+    /* 明るい文字色 */
+    border-color: #3a4250;
+    /* 境界も少し濃く */
+    caret-color: #e5e7eb;
+    /* キャレットも見やすく */
+}
+
+/* ついでにセレクト/入力の背景もダークで少し濃くしたい場合（任意） */
+body.dark input,
+body.dark select {
+    background: #232833;
+    color: #e5e7eb;
+    border-color: #3a4250;
+}
+
+
+/* ダークテーマ時のボタン改善 */
+body.dark button#generateBtn {
+    background-color: #3b82f6;
+    /* 鮮やかな青 */
+    color: #fff;
+}
+
+body.dark button#generateBtn:hover {
+    background-color: #2563eb;
+    /* 濃い青 */
+}
+
+body.dark button#copyBtn {
+    background-color: #f3f4f6;
+    /* 明るい灰 */
+    color: #111827;
+    /* 濃い文字 */
+}
+
+body.dark button#copyBtn:hover {
+    background-color: #e5e7eb;
+    /* 少し暗めの灰 */
 }

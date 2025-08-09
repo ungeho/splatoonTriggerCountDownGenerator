@@ -2,53 +2,136 @@
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Splatoon Triggerカウントダウンジェネレーター</title>
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 
 <body>
-    <h1>Triggerカウントダウンジェネレーター</h1>
-
-    <label>
-        グループ名：<input type="text" id="groupName" required placeholder="グループ名(必須)">
-    </label>
-    <label>
-        接頭語（例: skillName_、空欄ならCDのみ）：
-        <input type="text" id="prefix" placeholder="例: skillName_">
-    </label>
-    <label>
-        トリガーワード：<input type="text" id="triggerWord" required placeholder="トリガー（必須）">
-    </label>
-    <label>
-        開始遅延秒数（初期表示までの遅延）：<input type="number" id="initialDelay" value="0" min="0" step="0.1">
-    </label>
-    <label>
-        カウント秒数（例：5 → 1なら 5）：<input type="number" id="countSeconds" value="5" min="1" step="1">
-    </label>
-    <label>
-        ゾーンID（ZoneLockH）：<input type="number" id="zoneId" required min="0" placeholder="ゾーンID（必須）">
-    </label>
-    <label>
-        overlayVOffset(文字を表示する高さ)：<input type="number" id="vOffset" value="1.3" step="0.1">
-    </label>
-    <label>
-        overlayFScale(文字の大きさ)：<input type="number" id="fScale" value="3" step="0.1">
-    </label>
-    <label>
-        0.1秒刻みにする閾値（例:2, 空欄なら全て1秒）：
-        <input type="number" id="fineThreshold" step="1" min="0" placeholder="例:2">
-    </label>
+    <header class="site-header">
+        <h1>Triggerカウントダウンジェネレーター</h1>
+        <button id="themeToggle" class="btn small theme-toggle">🌙 ダーク</button>
+    </header>
 
 
-    <button id="generateBtn">設定を生成</button>
-    <button id="copyBtn">クリップボードにコピー</button>
-    <span id="copyMsg" class="copy-message">コピーしました！</span>
-    <span id="errorMsg"></span>
+    <main class="container">
+        <!-- 基本設定 -->
+        <section class="card">
+            <h2 class="card-title">基本設定</h2>
+            <div class="form-grid">
+                <label class="field">
+                    <span>グループ名 <b class="req">必須</b></span>
+                    <input type="text" id="groupName" required placeholder="例: MyGroup" />
+                </label>
 
-    <textarea id="output" readonly></textarea>
+                <label class="field">
+                    <span>接頭語（空欄なら CD のみ）</span>
+                    <input type="text" id="prefix" placeholder="例: skillname_" />
+                </label>
+
+                <label class="field">
+                    <span>トリガーワード <b class="req">必須</b></span>
+                    <input type="text" id="triggerWord" required placeholder="例: test" />
+                </label>
+
+                <label class="field">
+                    <span>ゾーンID（ZoneLockH） <b class="req">必須</b></span>
+                    <input type="number" id="zoneId" required min="0" placeholder="例: 650" />
+                </label>
+
+                <label class="field">
+                    <span>対象オブジェクト</span>
+                    <select id="targetPlaceholder">
+                        <option value="self">Self</option>
+                        <option value="1-8">&lt;1-8&gt;</option>
+                        <option value="1">&lt;1&gt;</option>
+                        <option value="t1t2">&lt;t1&gt;&lt;t2&gt;</option>
+                        <option value="h1h2">&lt;h1&gt;&lt;h2&gt;</option>
+                        <option value="d1d2">&lt;d1&gt;&lt;d2&gt;</option>
+                        <option value="d1d2d3d4">&lt;d1&gt;&lt;d2&gt;&lt;d3&gt;&lt;d4&gt;</option>
+                    </select>
+                    <small class="hint">Self 以外は <code>refActorPlaceholder</code> と
+                        <code>refActorComparisonType:5</code> を付与</small>
+                </label>
+            </div>
+        </section>
+
+        <!-- カウントダウン設定 -->
+        <section class="card">
+            <h2 class="card-title">カウントダウン設定</h2>
+            <div class="form-grid">
+                <label class="field">
+                    <span>開始遅延秒数</span>
+                    <input type="number" id="initialDelay" value="0" min="0" step="0.1" />
+                </label>
+
+                <label class="field">
+                    <span>カウント秒数（5→1 なら 5）</span>
+                    <input type="number" id="countSeconds" value="5" min="1" step="1" />
+                </label>
+
+                <label class="field">
+                    <span>overlayVOffset（文字の高さ）</span>
+                    <input type="number" id="vOffset" value="1.3" step="0.1" />
+                </label>
+
+                <label class="field">
+                    <span>overlayFScale（文字の大きさ）</span>
+                    <input type="number" id="fScale" value="3" step="0.1" />
+                </label>
+
+                <label class="field">
+                    <span>0.1秒刻みの閾値（例: 2）</span>
+                    <input type="number" id="fineThreshold" step="1" min="0" placeholder="空欄で1秒刻み" />
+                </label>
+            </div>
+
+            <div class="toolbar">
+                <button id="generateBtn" class="btn primary">設定を生成</button>
+                <button id="copyBtn" class="btn">クリップボードにコピー</button>
+                <span id="copyMsg" class="copy-message" aria-live="polite">コピーしました！</span>
+                <span id="errorMsg" role="alert"></span>
+            </div>
+        </section>
+
+        <!-- 出力 -->
+        <section class="card">
+            <div class="output-head">
+                <h2 class="card-title">出力</h2>
+                <span class="bytes" id="outBytes"></span>
+            </div>
+            <textarea id="output" readonly placeholder="ここに ~Lv2~ 付きの1行JSONが行ごとに出ます"></textarea>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <small>FFXIV Splatoon 用プリセット生成ツール</small>
+    </footer>
 
     <script src="./js/script.js"></script>
+    <script>
+        // ダークテーマ切替
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        // 初期状態
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark');
+            themeToggle.textContent = '☀️ ライト';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark');
+            if (body.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+                themeToggle.textContent = '☀️ ライト';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeToggle.textContent = '🌙 ダーク';
+            }
+        });
+    </script>
 </body>
 
 </html>
